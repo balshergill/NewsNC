@@ -100,5 +100,66 @@ describe.only("utils function tests", () => {
       };
       expect(createKeyPairs(input)).to.eql(output);
     });
+    it("returns a new reference object with the title and id as key-value pairs when passed more than object in the array", () => {
+      const input = [
+        {
+          article_id: 1,
+          title: "First article",
+          body: "Sample text"
+        },
+        {
+          article_id: 2,
+          title: "Second article",
+          body: "Sample text Two"
+        }
+      ];
+      const output = {
+        "First article": 1,
+        "Second article": 2
+      };
+      expect(createKeyPairs(input)).to.eql(output);
+      const input2 = [
+        {
+          article_id: 1,
+          title: "They're not exactly dogs, are they?",
+          topic: "mitch",
+          author: "butter_bridge",
+          body: "Well? Think about it.",
+          created_at: 533132514171
+        },
+        {
+          article_id: 2,
+          title: "Seven inspirational thought leaders from Manchester UK",
+          topic: "mitch",
+          author: "rogersop",
+          body: "Who are we kidding, there is only one, and it's Mitch!",
+          created_at: 406988514171
+        },
+        {
+          article_id: 3,
+          title: "Am I a cat?",
+          topic: "mitch",
+          author: "icellusedkars",
+          body:
+            "Having run out of ideas for articles, I am staring at the wall blankly, like a cat. Does this make me a cat?",
+          created_at: 280844514171
+        },
+        {
+          article_id: 4,
+          title: "Moustache",
+          topic: "mitch",
+          author: "butter_bridge",
+          body: "Have you seen the size of that thing?",
+          created_at: 154700514171
+        }
+      ];
+      const output2 = {
+        "They're not exactly dogs, are they?": 1,
+        "Seven inspirational thought leaders from Manchester UK": 2,
+        "Am I a cat?": 3,
+        Moustache: 4
+      };
+      expect(createKeyPairs(input2)).to.eql(output2);
+    });
   });
 });
