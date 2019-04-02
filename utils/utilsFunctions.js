@@ -20,3 +20,12 @@ exports.createdByToAuth = commentsArr => {
   });
   return output;
 };
+
+exports.belongsKeyToArticlesId = (articlesRef, commentsArr) => {
+  const output = commentsArr.map(comment => {
+    const newObj = { ...comment, article_id: articlesRef[comment.belongs_to] };
+    delete newObj.belongs_to;
+    return newObj;
+  });
+  return output;
+};
