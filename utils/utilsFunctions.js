@@ -11,3 +11,12 @@ exports.createKeyPairs = articleArr =>
     acc[article.title] = article.article_id;
     return acc;
   }, {});
+
+exports.createdByToAuth = commentsArr => {
+  const output = commentsArr.map(comment => {
+    const newObj = { ...comment, author: comment.created_by };
+    delete newObj.created_by;
+    return newObj;
+  });
+  return output;
+};
