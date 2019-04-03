@@ -163,7 +163,7 @@ describe.only("utils function tests", () => {
       expect(createKeyPairs(input2)).to.eql(output2);
     });
     describe("createdByToAuth", () => {
-      it("converts the column name created by to author for an object with one comment", () => {
+      it("converts the column name created_by to author for an array with one comment", () => {
         const input = [
           {
             body: "sample text",
@@ -181,6 +181,41 @@ describe.only("utils function tests", () => {
           }
         ];
         expect(createdByToAuth(input)).to.eql(output);
+      });
+      it("converts the column name created_by to author for an array with multple comments", () => {
+        const input2 = [
+          {
+            body: "This is a bad article name",
+            belongs_to: "A",
+            created_by: "butter_bridge",
+            votes: 1,
+            created_at: 1038314163389
+          },
+          {
+            body: "The owls are not what they seem.",
+            belongs_to: "They're not exactly dogs, are they?",
+            created_by: "icellusedkars",
+            votes: 20,
+            created_at: 1006778163389
+          }
+        ];
+        const output2 = [
+          {
+            body: "This is a bad article name",
+            belongs_to: "A",
+            author: "butter_bridge",
+            votes: 1,
+            created_at: 1038314163389
+          },
+          {
+            body: "The owls are not what they seem.",
+            belongs_to: "They're not exactly dogs, are they?",
+            author: "icellusedkars",
+            votes: 20,
+            created_at: 1006778163389
+          }
+        ];
+        expect(createdByToAuth(input2)).to.eql(output2);
       });
     });
   });
