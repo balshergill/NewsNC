@@ -2,7 +2,8 @@ const { expect } = require("chai");
 
 const {
   timeStampJSConversion,
-  createKeyPairs
+  createKeyPairs,
+  createdByToAuth
 } = require("../utils/utilsFunctions");
 
 describe.only("utils function tests", () => {
@@ -160,6 +161,27 @@ describe.only("utils function tests", () => {
         Moustache: 4
       };
       expect(createKeyPairs(input2)).to.eql(output2);
+    });
+    describe("createdByToAuth", () => {
+      it("converts the column name created by to author for an object with one comment", () => {
+        const input = [
+          {
+            body: "sample text",
+            belongs_to:
+              "The People Tracking Every Touch, Pass And Tackle in the World Cup",
+            created_by: "tickle122"
+          }
+        ];
+        const output = [
+          {
+            body: "sample text",
+            belongs_to:
+              "The People Tracking Every Touch, Pass And Tackle in the World Cup",
+            author: "tickle122"
+          }
+        ];
+        expect(createdByToAuth(input)).to.eql(output);
+      });
     });
   });
 });
