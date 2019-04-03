@@ -1,9 +1,11 @@
+const { topics, users, articles, comments } = require("../data");
+
 const {
-  topicsData,
-  usersData,
-  articlesData,
-  commentsData
-} = require("../data");
+  timeStampJSConversion,
+  createKeyPairs,
+  createdByToAuth,
+  belongsKeyToArticlesId
+} = require("../../utils/utilsFunctions");
 
 const knex = require("knex");
 
@@ -13,25 +15,34 @@ exports.seed = (knex, Promise) => {
     .then(() => knex.migrate.latest())
     .then(() => {
       return knex("topics")
-        .insert(topicsData)
+        .insert(topics)
         .into("topics")
         .returning("*");
     })
-    .then(() => {
+    .then(topic => {
       return knex("users")
-        .insert(usersData)
+        .insert(users)
         .into("users")
         .returning("*");
     })
-    .then(() => {
+    .then(user => {
+      const correctTimeArticlesData = timeStampJSConversion(articles);
+
       return knex("articles")
-        .insert(articlesData)
+        .insert(correctTimeArticlesData)
         .into("articles")
         .returning("*");
     })
-    .then(() => {
+    .then(newArtData => {
+      const articlesRefs = createKeyPairs(newArtData);
+      const correctCommentsAuthor = createdByToAuth(comments);
+      const correctCommentsBelongsTo = belongsKeyToArticlesId(
+        articlesRefs,
+        correctCommentsAuthor
+      );
+      const correctedComments = timeStampJSConversion(correctCommentsBelongsTo);
       return knex("comments")
-        .insert(commentsData)
+        .insert(correctedComments)
         .into("comments")
         .returning("*");
     });
