@@ -1,5 +1,8 @@
 const apiRouter = require("express").Router();
+const topicsRouter = require("..routes/topicsRouter");
 const { methodNotAllowed } = require("../errors");
+
+apiRouter.use("/topics", topicsRouter);
 
 apiRouter
   .route("/")
