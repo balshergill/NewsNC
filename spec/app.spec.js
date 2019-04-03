@@ -73,5 +73,57 @@ describe.only("/", () => {
         });
       });
     });
+    describe("QUERIES", () => {
+      it("GET status: 200 and returns an array of articles written by a specific author", () => {
+        return request
+          .get("/api/articles?articles.author=butter_bridge")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.articles.length).to.equal(3);
+          });
+      });
+      it("GET status: 200 and returns an array of articles which have a specific topic", () => {
+        return request
+          .get("/api/articles?topic=mitch")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.articles).to.have.lengthOf(11);
+          });
+      });
+      it("GET status: 200 and returns an array of articles sorted by a specified column", () => {
+        return request
+          .get("/api/articles?sort_by=title")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.articles[0]).to.eql({
+              title: "Z",
+              topic: "mitch",
+              body: "I was hungry.",
+              article_id: 7,
+              author: "icellusedkars",
+              created_at: "1994-11-21T00:00:00.000Z",
+              votes: 0,
+              comment_count: "0"
+            });
+          });
+      });
+      it("GET status: 200 returns array of articles in a specified order", () => {
+        return request
+          .get("/api/articles?order=desc")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.articles[0]).to.eql({
+              article_id: 1,
+              title: "Living in the shadow of a great man",
+              body: "I find this existence challenging",
+              votes: 100,
+              topic: "mitch",
+              author: "butter_bridge",
+              created_at: "2018-11-15T00:00:00.000Z",
+              comment_count: "13"
+            });
+          });
+      });
+    });
   });
 });
