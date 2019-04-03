@@ -52,4 +52,26 @@ describe.only("/", () => {
       });
     });
   });
+  describe("/articles", () => {
+    describe("DEFAULT BEHAVIOUR", () => {
+      it("GET status:200", () => {
+        return request.get("/api/articles").expect(200);
+      });
+      it("checks whether each article object contains properties author, title, article_id, topic, created_at, votes and comment_count", () => {
+        return request.get("/api/articles").then(res => {
+          res.body.articles.forEach(article => {
+            expect(article).to.contain.keys(
+              "author",
+              "title",
+              "article_id",
+              "topic",
+              "created_at",
+              "votes",
+              "comment_count"
+            );
+          });
+        });
+      });
+    });
+  });
 });
