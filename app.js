@@ -15,10 +15,6 @@ app.use(bodyParser.json());
 
 app.use("/api", apiRouter);
 
-app.all("/*", (req, res, next) => {
-  next({ status: 404, message: "Path not found!" });
-});
-
 app.use(handle400);
 app.use(handle404);
 app.use(handle405);
