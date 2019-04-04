@@ -1,7 +1,8 @@
 const {
   selectArticles,
   getOneArticle,
-  updateArticle
+  updateArticle,
+  removeArticle
 } = require("../models/articles-model");
 
 exports.fetchArticles = (req, res, next) => {
@@ -13,8 +14,8 @@ exports.fetchArticles = (req, res, next) => {
 };
 
 exports.fetchOneArticle = (req, res, next) => {
-  const articleId = req.params.article_id;
-  return getOneArticle(articleId)
+  const id = req.params.article_id;
+  return getOneArticle(id)
     .then(([article]) => {
       res.status(200).send({ article });
     })
@@ -27,6 +28,15 @@ exports.voteOnArticle = (req, res, next) => {
   return updateArticle(id, vote)
     .then(([updatedArticle]) => {
       res.status(200).send({ updatedArticle });
+    })
+    .catch(next);
+};
+
+exports.deleteOneArticle = (req, res, next) => {
+  const id = req.params.article_id;
+  return removeArticle(id)
+    .then(article => {
+      res.status(204).json({ article });
     })
     .catch(next);
 };
