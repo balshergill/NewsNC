@@ -222,7 +222,7 @@ describe.only("/", () => {
               ]);
             });
         });
-        it.only("POST status:201", () => {
+        it("POST status:201", () => {
           const input = {
             author: "butter_bridge",
             body: "test for posting to /api/articles/articles/5/comments"
@@ -292,6 +292,35 @@ describe.only("/", () => {
               }
             ]);
           });
+      });
+    });
+    describe("/comments", () => {
+      describe("DEFAULT BEHAVIOURS", () => {
+        it("PATCH status:200", () => {
+          const input = { inc_votes: 1 };
+          return request
+            .patch("/api/comments/comments/1")
+            .send(input)
+            .expect(200);
+        });
+        it("PATCH status:200 and returns a single article object with an increased vote value when passed an objet with positive inc_votes value", () => {
+          const input = { inc_votes: 1 };
+          return request
+            .patch("/api/comments/comments/1")
+            .send(input)
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.updatedComment).to.eql({
+                comment_id: 1,
+                author: "butter_bridge",
+                article_id: 9,
+                votes: 17,
+                created_at: "2017-11-22T00:00:00.000Z",
+                body:
+                  "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+              });
+            });
+        });
       });
     });
   });
