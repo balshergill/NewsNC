@@ -52,3 +52,9 @@ exports.updateArticle = (id, voteIncrement) => {
     .increment("votes", voteIncrement)
     .returning("*");
 };
+
+exports.removeArticle = id => {
+  return knexConnection("articles")
+    .where("articles.article_id", "=", id)
+    .del();
+};
