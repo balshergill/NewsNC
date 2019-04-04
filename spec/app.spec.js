@@ -332,4 +332,38 @@ describe.only("/", () => {
       });
     });
   });
+  describe("/users", () => {
+    describe("DEFAULT BEHAVIOURS", () => {
+      it("GET status:200 and returns a single user object specified by username", () => {
+        return request
+          .get("/api/users/users/icellusedkars")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.user).to.eql({
+              avatar_url:
+                "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4",
+              name: "sam",
+              username: "icellusedkars"
+            });
+          });
+      });
+    });
+  });
 });
+
+// return request
+//   .get("/api/articles/articles/1")
+//   .expect(200)
+//   .then(({ body }) => {
+//     expect(body.article).to.eql({
+//       title: "Living in the shadow of a great man",
+//       topic: "mitch",
+//       body: "I find this existence challenging",
+//       article_id: 1,
+//       author: "butter_bridge",
+//       comment_count: "13",
+//       created_at: "2018-11-15T00:00:00.000Z",
+//       votes: 100
+//     });
+//   });
+//         });
