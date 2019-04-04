@@ -23,3 +23,32 @@ exports.selectArticles = ({
     .orderBy(sort_by, order)
     .returning("*");
 };
+
+exports.getOneArticle = id => {
+  return knexConnection
+    .select(
+      "articles.author",
+      "articles.title",
+      "articles.article_id",
+      "topic",
+      "articles.created_at",
+      "articles.votes",
+      "articles.body"
+    )
+    .from("articles")
+    .where("articles.article_id", "=", id)
+    .leftJoin("comments", "articles.article_id", "comments.article_id")
+    .count("comments.article_id as comment_count")
+    .groupBy("articles.article_id");
+};
+
+exports.updateArticle = (id, voteIncrement) => {
+  return knexConnection("articles")
+    .from("articles")
+    .where("articles.article_id", "=", id)
+    .leftJoin("comments", "articles.article_id", "comments.article_id")
+    .count("comments.article_id AS comment_count")
+    .groupBy("articles.article_id")
+    .increment("votes", voteIncrement)
+    .returning("*");
+};
