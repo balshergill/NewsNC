@@ -195,6 +195,64 @@ describe.only("/", () => {
               expect(body).to.eql({});
             });
         });
+        it("GET status:200", () => {
+          return request.get("/api/articles/articles/5/comments").expect(200);
+        });
+        it("GET status:200 and returns comments for a single article object specified by article_id", () => {
+          return request
+            .get("/api/articles/articles/5/comments")
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.comments).to.eql([
+                {
+                  comment_id: 14,
+                  votes: 16,
+                  created_at: "2004-11-25T00:00:00.000Z",
+                  author: "icellusedkars",
+                  body:
+                    "What do you see? I have no idea where this will lead us. This place I speak of, is known as the Black Lodge."
+                },
+                {
+                  comment_id: 15,
+                  votes: 1,
+                  created_at: "2003-11-26T00:00:00.000Z",
+                  author: "butter_bridge",
+                  body: "I am 100% sure that we're not completely sure."
+                }
+              ]);
+            });
+        });
+      });
+    });
+    describe("QUERIES", () => {
+      it("GET status:200 and returns comments for a single article object specified by article_id and sorted by a specified column", () => {
+        return request
+          .get("/api/articles/articles/1/comments?sort_by=votes")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.comments[0]).to.eql({
+              comment_id: 3,
+              votes: 100,
+              created_at: "2015-11-23T00:00:00.000Z",
+              author: "icellusedkars",
+              body:
+                "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works."
+            });
+          });
+      });
+      it("GET status: 200 and returns array of comments in a specified order", () => {
+        return request
+          .get("/api/articles/articles/1/comments?order=asc")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.comments[0]).to.eql({
+              comment_id: 18,
+              votes: 16,
+              created_at: "2000-11-26T00:00:00.000Z",
+              author: "butter_bridge",
+              body: "This morning, I showered for nine minutes."
+            });
+          });
       });
     });
   });

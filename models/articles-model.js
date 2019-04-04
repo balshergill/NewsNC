@@ -58,3 +58,14 @@ exports.removeArticle = id => {
     .where("articles.article_id", "=", id)
     .del();
 };
+
+exports.getArticleComments = (
+  id,
+  { sort_by = "created_at", order = "desc" }
+) => {
+  return knexConnection("comments")
+    .select("comment_id", "votes", "created_at", "author", "body")
+    .from("comments")
+    .where("comments.article_id", "=", id)
+    .orderBy(sort_by, order);
+};
