@@ -187,7 +187,7 @@ describe.only("/", () => {
               });
             });
         });
-        it("DELETE status:204, deletes the article, and any associated comments, and returns status 204 only", () => {
+        it("DELETE status:204, deletes the article and returns status 204 only", () => {
           return request
             .delete("/api/articles/articles/4")
             .expect(204)
@@ -319,6 +319,14 @@ describe.only("/", () => {
                 body:
                   "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
               });
+            });
+        });
+        it("DELETE status:204, deletes the comment, and returns status 204 only", () => {
+          return request
+            .delete("/api/comments/comments/4")
+            .expect(204)
+            .then(({ body }) => {
+              expect(body).to.eql({});
             });
         });
       });
