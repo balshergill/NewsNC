@@ -3,7 +3,8 @@ const {
   getOneArticle,
   updateArticle,
   removeArticle,
-  getArticleComments
+  getArticleComments,
+  addCommentToArticle
 } = require("../models/articles-model");
 
 exports.fetchArticles = (req, res, next) => {
@@ -51,6 +52,19 @@ exports.fetchCommentsByArticle = (req, res, next) => {
       })
       .catch(err => {
         next(err);
+      });
+  });
+};
+
+exports.postCommentToArticle = (req, res, next) => {
+  const id = req.params.article_id;
+  getOneArticle(id).then(() => {
+    return addCommentToArticle(id, req.body)
+      .then(comment => {
+        res.status(201).send({ comment });
+      })
+      .catch(err => {
+        console.log(err);
       });
   });
 };

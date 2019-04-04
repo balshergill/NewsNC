@@ -69,3 +69,10 @@ exports.getArticleComments = (
     .where("comments.article_id", "=", id)
     .orderBy(sort_by, order);
 };
+
+exports.addCommentToArticle = (id, newComment) => {
+  return knexConnection
+    .insert({ ...newComment, article_id: id })
+    .into("comments")
+    .returning("*");
+};
