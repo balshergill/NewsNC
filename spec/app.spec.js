@@ -187,6 +187,14 @@ describe.only("/", () => {
               });
             });
         });
+        it("DELETE status:204, deletes the article, and any associated comments, and returns status 204 only", () => {
+          return request
+            .delete("/api/articles/articles/4")
+            .expect(204)
+            .then(({ body }) => {
+              expect(body).to.eql({});
+            });
+        });
       });
     });
   });
