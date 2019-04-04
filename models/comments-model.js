@@ -10,3 +10,9 @@ exports.updateComment = (id, voteIncrement) => {
     .increment("votes", voteIncrement)
     .returning("*");
 };
+
+exports.removeComment = id => {
+  return knexConnection("comments")
+    .where("comments.comment_id", "=", id)
+    .del();
+};
