@@ -6,7 +6,7 @@ const {
   createdByToAuth
 } = require("../utils/utilsFunctions");
 
-describe.only("utils function tests", () => {
+describe("utils function tests", () => {
   describe("timeStampJSConversion", () => {
     it("converts the timestamp from the created_at column of a single article object to a date", () => {
       const input = [
