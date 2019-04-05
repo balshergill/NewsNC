@@ -51,6 +51,16 @@ describe.only("/", () => {
           });
       });
     });
+    describe("/error handling", () => {
+      it.only("BAD METHOD status:405, returns error message when using a method not allowed", () =>
+        request
+          .delete("/api/topics/books")
+          .expect(405)
+          .then(res => {
+            console.log(res.body.msg);
+            expect(res.body.msg).to.equal("Method Not Allowed");
+          }));
+    });
   });
   describe("/articles", () => {
     describe("DEFAULT BEHAVIOUR", () => {
@@ -238,6 +248,14 @@ describe.only("/", () => {
             });
         });
       });
+      it("GET status:400 responds with error message when request is made with an invalid article ID", () => {
+        return request
+          .get("/api/articles/articles/abc")
+          .expect(400)
+          .then(res => {
+            expect(res.body.msg).to.equal("Bad Request");
+          });
+      });
     });
     describe("QUERIES", () => {
       it("GET status:200 and returns comments for a single article object specified by article_id and sorted by a specified column", () => {
@@ -350,20 +368,3 @@ describe.only("/", () => {
     });
   });
 });
-
-// return request
-//   .get("/api/articles/articles/1")
-//   .expect(200)
-//   .then(({ body }) => {
-//     expect(body.article).to.eql({
-//       title: "Living in the shadow of a great man",
-//       topic: "mitch",
-//       body: "I find this existence challenging",
-//       article_id: 1,
-//       author: "butter_bridge",
-//       comment_count: "13",
-//       created_at: "2018-11-15T00:00:00.000Z",
-//       votes: 100
-//     });
-//   });
-//         });
