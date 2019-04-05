@@ -52,9 +52,9 @@ describe.only("/", () => {
       });
     });
     describe("/error handling", () => {
-      it.only("BAD METHOD status:405, returns error message when using a method not allowed", () =>
+      it("BAD METHOD status:405, returns error message when using a method not allowed", () =>
         request
-          .delete("/api/topics/books")
+          .delete("/api/topics")
           .expect(405)
           .then(res => {
             console.log(res.body.msg);
@@ -82,6 +82,16 @@ describe.only("/", () => {
           });
         });
       });
+    });
+    describe("/error handling", () => {
+      it.only("BAD METHOD status:405, returns error message when using a method not allowed", () =>
+        request
+          .delete("/api/articles")
+          .expect(405)
+          .then(res => {
+            console.log(res.body.msg);
+            expect(res.body.msg).to.equal("Method Not Allowed");
+          }));
     });
     describe("QUERIES", () => {
       it("GET status: 200 and returns an array of articles written by a specific author", () => {
