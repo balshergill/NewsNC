@@ -6,7 +6,7 @@ const {
 const { methodNotAllowed } = require("../errors");
 
 commentsRouter
-  .route("/comments/:comment_id")
+  .route("/:comment_id")
   .patch(voteOnComment)
   .delete(deleteOneComment)
   .all(methodNotAllowed);

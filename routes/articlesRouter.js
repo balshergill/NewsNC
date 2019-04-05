@@ -12,13 +12,13 @@ const { methodNotAllowed } = require("../errors");
 articlesRouter.route("/").get(fetchArticles);
 
 articlesRouter
-  .route("/articles/:article_id/comments")
+  .route("/:article_id/comments")
   .get(fetchCommentsByArticle)
   .post(postCommentToArticle)
   .all(methodNotAllowed);
 
 articlesRouter
-  .route("/articles/:article_id")
+  .route("/:article_id")
   .get(fetchOneArticle)
   .patch(voteOnArticle)
   .delete(deleteOneArticle)

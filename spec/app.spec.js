@@ -159,7 +159,7 @@ describe("/", () => {
         describe("DEFAULT BEHAVIOURS", () => {
           it("GET status:200 returns a single article object specified by article_id", () => {
             return request
-              .get("/api/articles/articles/1")
+              .get("/api/articles/1")
               .expect(200)
               .then(({ body }) => {
                 expect(body.article).to.eql({
@@ -177,14 +177,14 @@ describe("/", () => {
           it("PATCH status:200 returns a single article object with a new vote value", () => {
             const input = { inc_votes: 1 };
             return request
-              .patch("/api/articles//articles/1")
+              .patch("/api/articles/1")
               .send(input)
               .expect(200);
           });
           it("PATCH status:200 and returns a single article object with an increased vote value when passed an objet with positive inc_votes value", () => {
             const input = { inc_votes: 1 };
             return request
-              .patch("/api/articles//articles/1")
+              .patch("/api/articles/1")
               .send(input)
               .expect(200)
               .then(({ body }) => {
@@ -202,7 +202,7 @@ describe("/", () => {
           it("PATCH status:200 and returns a single article object with a decreased vote value when passed an objet with positive inc_votes value", () => {
             const input = { inc_votes: -50 };
             return request
-              .patch("/api/articles//articles/1")
+              .patch("/api/articles/1")
               .send(input)
               .expect(200)
               .then(({ body }) => {
@@ -219,18 +219,18 @@ describe("/", () => {
           });
           it("DELETE status:204, deletes the article and returns status 204 only", () => {
             return request
-              .delete("/api/articles/articles/4")
+              .delete("/api/articles/4")
               .expect(204)
               .then(({ body }) => {
                 expect(body).to.eql({});
               });
           });
           it("GET status:200", () => {
-            return request.get("/api/articles/articles/5/comments").expect(200);
+            return request.get("/api/articles/5/comments").expect(200);
           });
           it("GET status:200 and returns comments for a single article object specified by article_id", () => {
             return request
-              .get("/api/articles/articles/5/comments")
+              .get("/api/articles/5/comments")
               .expect(200)
               .then(({ body }) => {
                 expect(body.comments).to.eql([
@@ -255,22 +255,22 @@ describe("/", () => {
           it("POST status:201", () => {
             const input = {
               author: "butter_bridge",
-              body: "test for posting to /api/articles/articles/5/comments"
+              body: "test for posting to /api/articles/5/comments"
             };
             return request
-              .post("/api/articles/articles/5/comments")
+              .post("/api/articles/5/comments")
               .send(input)
               .expect(201)
               .then(res => {
                 expect(res.body.comment[0].body).to.eql(
-                  "test for posting to /api/articles/articles/5/comments"
+                  "test for posting to /api/articles/5/comments"
                 );
               });
           });
         });
         it("GET status:400 responds with error message when request is made with an invalid article ID", () => {
           return request
-            .get("/api/articles/articles/abc")
+            .get("/api/articles/abc")
             .expect(400)
             .then(res => {
               expect(res.body.msg).to.equal("Bad Request");
@@ -280,7 +280,7 @@ describe("/", () => {
       describe("QUERIES", () => {
         it("GET status:200 and returns comments for a single article object specified by article_id and sorted by a specified column", () => {
           return request
-            .get("/api/articles/articles/1/comments?sort_by=votes")
+            .get("/api/articles/1/comments?sort_by=votes")
             .expect(200)
             .then(({ body }) => {
               expect(body.comments[0]).to.eql({
@@ -295,7 +295,7 @@ describe("/", () => {
         });
         it("GET status: 200 and returns array of comments in a specified order", () => {
           return request
-            .get("/api/articles/articles/1/comments?order=asc")
+            .get("/api/articles/1/comments?order=asc")
             .expect(200)
             .then(({ body }) => {
               expect(body.comments[0]).to.eql({
@@ -309,7 +309,7 @@ describe("/", () => {
         });
         it("GET status:200 and returns comments for a single article object specified by article_id", () => {
           return request
-            .get("/api/articles/articles/5/comments")
+            .get("/api/articles/5/comments")
             .expect(200)
             .then(({ body }) => {
               expect(body.comments).to.eql([
@@ -338,14 +338,14 @@ describe("/", () => {
         it("PATCH status:200", () => {
           const input = { inc_votes: 1 };
           return request
-            .patch("/api/comments/comments/1")
+            .patch("/api/comments/1")
             .send(input)
             .expect(200);
         });
         it("PATCH status:200 and returns a single article object with an increased vote value when passed an objet with positive inc_votes value", () => {
           const input = { inc_votes: 1 };
           return request
-            .patch("/api/comments/comments/1")
+            .patch("/api/comments/1")
             .send(input)
             .expect(200)
             .then(({ body }) => {
@@ -362,7 +362,7 @@ describe("/", () => {
         });
         it("DELETE status:204, deletes the comment, and returns status 204 only", () => {
           return request
-            .delete("/api/comments/comments/4")
+            .delete("/api/comments/4")
             .expect(204)
             .then(({ body }) => {
               expect(body).to.eql({});
@@ -374,7 +374,7 @@ describe("/", () => {
       describe("DEFAULT BEHAVIOURS", () => {
         it("GET status:200 and returns a single user object specified by username", () => {
           return request
-            .get("/api/users/users/icellusedkars")
+            .get("/api/users/icellusedkars")
             .expect(200)
             .then(({ body }) => {
               expect(body.user).to.eql({

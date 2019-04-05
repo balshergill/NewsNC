@@ -3,7 +3,7 @@ const { fetchOneUser } = require("../controllers/users-controller");
 const { methodNotAllowed } = require("../errors");
 
 usersRouter
-  .route("/users/:username")
+  .route("/:username")
   .get(fetchOneUser)
   .all(methodNotAllowed);
 
