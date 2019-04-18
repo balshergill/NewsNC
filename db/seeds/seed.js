@@ -14,8 +14,8 @@ const {
 
 const knex = require("knex");
 
-exports.seed = (knex, Promise) => {
-  return knex.migrate
+exports.seed = (knex, Promise) =>
+  knex.migrate
     .rollback()
     .then(() => knex.migrate.latest())
     .then(() => {
@@ -51,4 +51,3 @@ exports.seed = (knex, Promise) => {
         .into("comments")
         .returning("*");
     });
-};

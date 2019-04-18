@@ -70,7 +70,6 @@ exports.fetchCommentsByArticle = (req, res, next) => {
   const id = req.params.article_id;
   return getArticleComments(id, req.query)
     .then(comments => {
-      console.log(comments);
       if (comments.length === 0) {
         next({ status: 404 });
       } else {

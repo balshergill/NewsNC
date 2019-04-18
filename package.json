@@ -12,7 +12,7 @@
     "seed": "knex seed:run",
     "dev": "nodemon listen.js",
     "start": "node listen.js",
-    "seed:prod": "NODE.ENV=production DATABASE_URL = $(heroku config:get DATABASE_URL)"
+    "seed:prod": "NODE_ENV=production DATABASE_URL=$(heroku config:get DATABASE_URL) knex seed:run"
   },
   "author": "",
   "license": "BSD",
