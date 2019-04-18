@@ -7,3 +7,17 @@ exports.fetchTopics = (req, res, next) => {
     })
     .catch(next);
 };
+
+// exports.fetchOneArticle = (req, res, next) => {
+//   const id = req.params.article_id;
+//   console.log(id, "in the controller");
+//   getOneArticle(id)
+//     .then(article => {
+//       if (article.length === 0 || typeof article === "undefined") {
+//         next({ status: 404 });
+//       } else {
+//         res.status(200).send({ article });
+//       }
+//     })
+//     .catch(next);
+// };

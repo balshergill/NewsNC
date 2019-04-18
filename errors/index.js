@@ -4,7 +4,7 @@ exports.methodNotAllowed = (req, res) => {
 
 exports.handle400 = (err, req, res, next) => {
   const badRequestCodes = ["22P02"];
-  if (badRequestCodes.includes(err.code)) {
+  if (badRequestCodes.includes(err.code) || err.status === 400) {
     res.status(400).send({ msg: "Bad Request" });
   } else next(err);
 };
@@ -24,5 +24,5 @@ exports.handle422 = (err, req, res, next) => {
 };
 
 exports.handle500 = (err, req, res, next) => {
-  res.status(500).send({ msg: "Internal Server Error" });
+  res.status(500).send({ msg: "Internal Server Errorrr" });
 };

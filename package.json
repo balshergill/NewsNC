@@ -1,7 +1,7 @@
 {
   "name": "ncnews",
   "version": "1.0.0",
-  "description": "",
+  "description": "## Available Scripts",
   "main": "listen.js",
   "scripts": {
     "setup-dbs": "psql -f db/setup.sql",
@@ -15,10 +15,11 @@
     "seed:prod": "NODE.ENV=production DATABASE_URL = $(heroku config:get DATABASE_URL)"
   },
   "author": "",
-  "license": "ISC",
+  "license": "BSD",
   "dependencies": {
     "express": "^4.16.4",
-    "knex": "^0.16.3",
+    "knex": "^0.16.5",
+    "knex-case": "^2.1.2",
     "pg": "^7.9.0"
   },
   "devDependencies": {
@@ -27,5 +28,11 @@
     "mocha": "^6.0.2",
     "nodemon": "^1.18.10",
     "supertest": "^4.0.2"
+  },
+  "readmeFilename": "README.md",
+  "gitHead": "a7044466146d0865517f2f90012c23529c8e93b4",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/balshergill/NewsNC.git"
   }
 }
