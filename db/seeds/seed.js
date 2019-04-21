@@ -1,9 +1,4 @@
-const {
-  topics,
-  users,
-  articles,
-  comments
-} = require("../data/test-data/index");
+const { topics, users, articles, comments } = require("../data");
 
 const {
   timeStampJSConversion,

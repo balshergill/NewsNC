@@ -170,7 +170,25 @@ describe("/", () => {
                   });
                 });
             });
-            it("PATCH status:200 and returns a single article object with a decreased vote value when passed an object with positive inc_votes value", () => {
+            it("PATCH status:200 and returns the same article object with an unchanged note value when passed an object with an incorrect inc_votes key", () => {
+              const input = { incvotes: 1 };
+              return request
+                .patch("/api/articles/1")
+                .send(input)
+                .expect(200)
+                .then(({ body }) => {
+                  expect(body.updatedArticle[0]).to.eql({
+                    article_id: 1,
+                    title: "Living in the shadow of a great man",
+                    body: "I find this existence challenging",
+                    votes: 100,
+                    topic: "mitch",
+                    author: "butter_bridge",
+                    created_at: "2018-11-15T00:00:00.000Z"
+                  });
+                });
+            });
+            it("PATCH status:200 and returns a single article object with a decreased vote value when passed an object with negative inc_votes value", () => {
               const input = { inc_votes: -50 };
               return request
                 .patch("/api/articles/1")
@@ -186,14 +204,6 @@ describe("/", () => {
                     author: "butter_bridge",
                     created_at: "2018-11-15T00:00:00.000Z"
                   });
-                });
-            });
-            it("DELETE status:204, deletes the article and returns status 204 only", () => {
-              return request
-                .delete("/api/articles/4")
-                .expect(204)
-                .then(({ body }) => {
-                  expect(body).to.eql({});
                 });
             });
             it("GET status:200", () => {
@@ -321,6 +331,15 @@ describe("/", () => {
               expect(res.body.msg).to.equal("Resource Not Found");
             });
         });
+        it("BAD METHOD status:405, returns error message when using a method not allowed", () => {
+          return request
+            .delete("/api/articles/1")
+            .expect(405)
+            .then(res => {
+              expect(res.body.msg).to.equal("Method Not Allowed");
+            });
+        });
+
         it("NOT FOUND status 404, returns an error message when cannot find specific article", () => {
           return request
             .get("/api/articles/80")
@@ -335,6 +354,14 @@ describe("/", () => {
             .expect(400)
             .then(({ body }) => {
               expect(body.msg).to.equal("Bad Request");
+            });
+        });
+        it("BAD METHOD status:405, returns error message when using a method not allowed", () => {
+          return request
+            .patch("/api/articles/300/comments")
+            .expect(405)
+            .then(res => {
+              expect(res.body.msg).to.equal("Method Not Allowed");
             });
         });
         it("NOT FOUND status:404, returns error when trying to get comments by non-existent article ID", () => {
@@ -463,14 +490,14 @@ describe("/", () => {
             .send(input)
             .expect(200);
         });
-        it("PATCH status:200 and returns a single article object with an increased vote value when passed an objet with positive inc_votes value", () => {
+        it("PATCH status:200 and returns a single article object with an increased vote value when passed an object with positive inc_votes value", () => {
           const input = { inc_votes: 1 };
           return request
             .patch("/api/comments/1")
             .send(input)
             .expect(200)
             .then(({ body }) => {
-              expect(body.updatedComment).to.eql({
+              expect(body.updatedComment[0]).to.eql({
                 comment_id: 1,
                 author: "butter_bridge",
                 article_id: 9,
@@ -491,12 +518,21 @@ describe("/", () => {
         });
       });
       describe("ERROR HANDLING", () => {
+        it("BAD METHOD status:405, returns error message when using a method not allowed", () => {
+          return request
+            .get("/api/comments/300")
+            .expect(405)
+            .then(res => {
+              expect(res.body.msg).to.equal("Method Not Allowed");
+            });
+        });
         it("NOT FOUND status:404, returns error when specific comment cannot be found to patch", () => {
           return request
             .patch("/api/comments/300")
             .send({ inc_votes: 1 })
             .expect(404)
             .then(({ body }) => {
+              console.log(body);
               expect(body.msg).to.equal("Resource Not Found");
             });
         });
@@ -545,6 +581,16 @@ describe("/", () => {
                 username: "icellusedkars"
               });
             });
+        });
+        describe("ERROR HANDLING", () => {
+          it("BAD METHOD status:405, returns error message when using a method not allowed", () => {
+            return request
+              .delete("/api/users/icellusedkars")
+              .expect(405)
+              .then(res => {
+                expect(res.body.msg).to.equal("Method Not Allowed");
+              });
+          });
         });
       });
     });

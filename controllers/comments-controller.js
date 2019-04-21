@@ -2,14 +2,13 @@ const { updateComment, removeComment } = require("../models/comments-model");
 
 exports.voteOnComment = (req, res, next) => {
   const id = req.params.comment_id;
-  const vote = req.body.inc_votes;
   const ob = req.body;
   const keys = Object.keys(ob);
-  return updateComment(id, vote)
-    .then(([updatedComment]) => {
+  return updateComment(id, ob)
+    .then(updatedComment => {
       if (keys.length !== 1) {
         next({ status: 400 });
-      } else if (!updatedComment) {
+      } else if (updatedComment.length === 0) {
         next({ status: 404 });
       } else {
         res.status(200).send({ updatedComment });

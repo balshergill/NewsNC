@@ -1,6 +1,11 @@
 const knexConnection = require("../db/connection");
 
-exports.updateComment = (id, voteIncrement) => {
+exports.updateComment = (id, voteIncrement = 0) => {
+  if (Object.keys(voteIncrement)[0] === "inc_votes") {
+    voteIncrement = voteIncrement.inc_votes;
+  } else {
+    voteIncrement = 0;
+  }
   return knexConnection("comments")
     .from("comments")
     .where("comment_id", "=", id)

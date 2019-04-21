@@ -38,10 +38,9 @@ exports.fetchOneArticle = (req, res, next) => {
 
 exports.voteOnArticle = (req, res, next) => {
   const id = req.params.article_id;
-  const vote = req.body.inc_votes;
   const ob = req.body;
   const keys = Object.keys(ob);
-  return updateArticle(id, vote)
+  return updateArticle(id, ob)
     .then(updatedArticle => {
       if (keys.length !== 1) {
         next({ status: 400 });
@@ -54,14 +53,14 @@ exports.voteOnArticle = (req, res, next) => {
     .catch(next);
 };
 
-exports.deleteOneArticle = (req, res, next) => {
-  const id = req.params.article_id;
-  return removeArticle(id)
-    .then(article => {
-      res.status(204).json({ article });
-    })
-    .catch(next);
-};
+// exports.deleteOneArticle = (req, res, next) => {
+//   const id = req.params.article_id;
+//   return removeArticle(id)
+//     .then(article => {
+//       res.status(204).json({ article });
+//     })
+//     .catch(next);
+// };
 
 exports.fetchCommentsByArticle = (req, res, next) => {
   if (req.query.sort_by === "size") {

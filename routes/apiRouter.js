@@ -12,7 +12,7 @@ apiRouter.use("/users", usersRouter);
 
 apiRouter
   .route("/")
-  .get((req, res, next) => res.send({ ok: true }))
+  .get(displayApiRoutes)
   .all(methodNotAllowed);
 
 module.exports = apiRouter;

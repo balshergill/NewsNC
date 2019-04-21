@@ -4,6 +4,10 @@ exports.selectArticles = ({
   order = "desc",
   ...queries
 }) => {
+  const validColumns = ["votes", "body", "article_id", "title", "username"];
+  if (!validColumns.includes(sort_by)) {
+    sort_by = "created_at";
+  }
   return knexConnection
     .select(
       "articles.article_id",
@@ -77,7 +81,12 @@ exports.getOneArticle = id => {
     .groupBy("articles.article_id");
 };
 
-exports.updateArticle = (id, voteIncrement) => {
+exports.updateArticle = (id, voteIncrement = 0) => {
+  if (Object.keys(voteIncrement)[0] === "inc_votes") {
+    voteIncrement = voteIncrement.inc_votes;
+  } else {
+    voteIncrement = 0;
+  }
   return knexConnection("articles")
     .from("articles")
     .where("articles.article_id", "=", id)
