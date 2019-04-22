@@ -73,7 +73,16 @@ describe("/", () => {
             });
           });
         });
+        it("deleted status:204 and returns an empty object when a valid article is deleted", () => {
+          return request
+            .delete("/api/articles/1")
+            .expect(204)
+            .then(res => {
+              expect(res.body).to.eql({});
+            });
+        });
       });
+
       describe("QUERIES", () => {
         it("GET status: 200 and returns an array of articles written by a specific author", () => {
           return request
@@ -249,14 +258,6 @@ describe("/", () => {
                 });
             });
           });
-          it("GET status:400 responds with error message when request is made with an invalid article ID", () => {
-            return request
-              .get("/api/articles/abc")
-              .expect(400)
-              .then(res => {
-                expect(res.body.msg).to.equal("Bad Request");
-              });
-          });
         });
         describe("QUERIES", () => {
           it("GET status:200 and returns comments for a single article object specified by article_id and sorted by a specified column", () => {
@@ -331,21 +332,20 @@ describe("/", () => {
               expect(res.body.msg).to.equal("Resource Not Found");
             });
         });
-        it("BAD METHOD status:405, returns error message when using a method not allowed", () => {
+        it("NOT FOUND status:404, returns error message when given a non-existent article ID (integer)", () => {
           return request
-            .delete("/api/articles/1")
-            .expect(405)
-            .then(res => {
-              expect(res.body.msg).to.equal("Method Not Allowed");
-            });
-        });
-
-        it("NOT FOUND status 404, returns an error message when cannot find specific article", () => {
-          return request
-            .get("/api/articles/80")
+            .delete("/api/articles/800")
             .expect(404)
             .then(res => {
               expect(res.body.msg).to.equal("Resource Not Found");
+            });
+        });
+        it("BAD REQUEST status:400 responds with error message when request is made with an invalid article ID (not an integer)", () => {
+          return request
+            .get("/api/articles/abc")
+            .expect(400)
+            .then(res => {
+              expect(res.body.msg).to.equal("Bad Request");
             });
         });
         it("BAD REQUEST status 400, returns an error message when trying to sort by a column which doesn't exist", () => {
@@ -372,7 +372,7 @@ describe("/", () => {
               expect(body.msg).to.equal("Resource Not Found");
             });
         });
-        it("NOT FOUND status:404, returns error when trying to post a comment by non-existent article ID", () => {
+        it("NOT FOUND status:404, returns error when trying to post a comment by non-existent article ID which is an integer", () => {
           const input = {
             author: "butter_bridge",
             body: "hello"
@@ -383,6 +383,19 @@ describe("/", () => {
             .expect(404)
             .then(({ body }) => {
               expect(body.msg).to.equal("Resource Not Found");
+            });
+        });
+        it("BAD REQUEST status:400, returns error when trying to post a comment by non-existent article ID which is not an integer", () => {
+          const input = {
+            author: "butter_bridge",
+            body: "hello"
+          };
+          return request
+            .post("/api/articles/abc/comments")
+            .send(input)
+            .expect(400)
+            .then(({ body }) => {
+              expect(body.msg).to.equal("Bad Request");
             });
         });
         it("NOT FOUND status 404, returns an error message when post request does not contain enough data", () => {
@@ -410,7 +423,6 @@ describe("/", () => {
               expect(res.body.msg).to.equal("Resource Not Found");
             });
         });
-
         it("NOT FOUND status 404, returns an error message when cannot find specific article to patch", () => {
           const input = { inc_votes: 1 };
           return request

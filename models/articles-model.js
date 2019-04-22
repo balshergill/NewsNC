@@ -1,4 +1,5 @@
 const knexConnection = require("../db/connection");
+
 exports.selectArticles = ({
   sort_by = "created_at",
   order = "desc",
@@ -26,42 +27,6 @@ exports.selectArticles = ({
     .orderBy(sort_by, order)
     .returning("*");
 };
-
-// exports.selectArticles = ({
-//   sort_by = "created_at",
-//   order = "desc",
-//   username,
-//   ...queries
-// }) => {
-//   console.log(username, "in model");
-//   // array of valid sort criteria if valid fine if not set at created at
-
-//   if (username) {
-//     whereClause("articles.author", "=", username);
-//   } else {
-//     whereClause(...queries);
-//   }
-//   return (
-//     knexConnection
-//       .select(
-//         "articles.article_id",
-//         "title",
-//         "articles.body",
-//         "articles.votes",
-//         "articles.topic",
-//         "articles.author",
-//         "articles.created_at"
-//       )
-//       .from("articles")
-//       // .modify(username, "articles.author")
-//       .where(whereClause)
-//       .leftJoin("comments", "articles.article_id", "=", "comments.article_id")
-//       .groupBy("articles.article_id")
-//       .count("comments.article_id AS comment_count")
-//       .orderBy(sort_by, order)
-//       .returning("*")
-//   );
-// };
 
 exports.getOneArticle = id => {
   return knexConnection
@@ -100,7 +65,8 @@ exports.updateArticle = (id, voteIncrement = 0) => {
 exports.removeArticle = id => {
   return knexConnection("articles")
     .where("articles.article_id", "=", id)
-    .del();
+    .del()
+    .returning("*");
 };
 
 exports.getArticleComments = (

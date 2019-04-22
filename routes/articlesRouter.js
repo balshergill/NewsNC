@@ -21,6 +21,7 @@ articlesRouter
   .route("/:article_id")
   .get(fetchOneArticle)
   .patch(voteOnArticle)
+  .delete(deleteOneArticle)
   .all(methodNotAllowed);
 
 module.exports = articlesRouter;

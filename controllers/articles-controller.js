@@ -53,14 +53,18 @@ exports.voteOnArticle = (req, res, next) => {
     .catch(next);
 };
 
-// exports.deleteOneArticle = (req, res, next) => {
-//   const id = req.params.article_id;
-//   return removeArticle(id)
-//     .then(article => {
-//       res.status(204).json({ article });
-//     })
-//     .catch(next);
-// };
+exports.deleteOneArticle = (req, res, next) => {
+  const id = req.params.article_id;
+  return removeArticle(id)
+    .then(article => {
+      if (article.length === 1) {
+        res.status(204).json({ article });
+      } else {
+        next({ status: 404 });
+      }
+    })
+    .catch(next);
+};
 
 exports.fetchCommentsByArticle = (req, res, next) => {
   if (req.query.sort_by === "size") {
