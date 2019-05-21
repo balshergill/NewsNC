@@ -2,6 +2,8 @@
 
 The backend API created for the Northcoders News website https://shergill.netlify.com.
 
+# https://balsnewsnc.herokuapp.com/api/ 
+
 ## Setup
 
 - Download the source code into a working directory
